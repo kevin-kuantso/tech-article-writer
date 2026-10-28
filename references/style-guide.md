@@ -57,7 +57,7 @@ Guide、Apple Style Guide、Diátaxis Framework。每條規則行尾附原始出
 - 一詞一義：同一概念全篇不換字，官方大小寫照抄如 `TypeScript`（https://learn.microsoft.com/en-us/style-guide/word-choice/use-technical-terms-carefully）
 - 官方大小寫延伸：產品／服務／技術名稱的大小寫比照官方原始寫法，不自行正規化，也不新造內部大小寫（https://learn.microsoft.com/en-us/style-guide/capitalization）
 - 首次出現即定義：不熟悉的名詞第一次出現就要定義；名詞多時集中整理成詞彙表（https://developers.google.com/tech-writing/one/words）
-- 人名與機構名比照辦理，且以「全文出現順序」計算首次——表格、圖說常排在正文前，其中的人名也要帶身分（例：「Peter Steinberger（OpenClaw 創辦人）」），不得先用名字、後文才補介紹（2026-07-21 首篇實戰 bad case）
+- 人名與機構名比照辦理，且以「全文出現順序」計算首次——表格、圖說常排在正文前，其中的人名也要帶身分（例：「Jane Doe（ExampleDB 創辦人）」），不得先用名字、後文才補介紹（2026-07-21 首篇實戰 bad case）
 - 意譯詞首次出現附英文原詞：把官方英文術語意譯成中文時（例：pre-approve→預先核准），第一次出現寫成「中文（英文原詞）」，之後全篇只用同一個說法；同一概念不得中英混用（例：開頭寫「白名單」、後文寫 `allowlist`），指稱不同對象的詞也不得共用同一個字（例：「清單」同時指 `allowed-tools` 的清單與模型的可用工具池，要各給一個詞）。縮寫與產品功能名比照：MCP 首次寫全稱，`managed settings`、Wayback 這類讀者可能不熟的名詞首次附一句說明（2026-10-27 實戰 bad case：定稿前掃出 7 處）
 
 ## 程式碼與排版
