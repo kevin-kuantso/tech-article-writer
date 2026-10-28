@@ -58,6 +58,7 @@ Guide、Apple Style Guide、Diátaxis Framework。每條規則行尾附原始出
 - 官方大小寫延伸：產品／服務／技術名稱的大小寫比照官方原始寫法，不自行正規化，也不新造內部大小寫（https://learn.microsoft.com/en-us/style-guide/capitalization）
 - 首次出現即定義：不熟悉的名詞第一次出現就要定義；名詞多時集中整理成詞彙表（https://developers.google.com/tech-writing/one/words）
 - 人名與機構名比照辦理，且以「全文出現順序」計算首次——表格、圖說常排在正文前，其中的人名也要帶身分（例：「Peter Steinberger（OpenClaw 創辦人）」），不得先用名字、後文才補介紹（2026-07-21 首篇實戰 bad case）
+- 意譯詞首次出現附英文原詞：把官方英文術語意譯成中文時（例：pre-approve→預先核准），第一次出現寫成「中文（英文原詞）」，之後全篇只用同一個說法；同一概念不得中英混用（例：開頭寫「白名單」、後文寫 `allowlist`），指稱不同對象的詞也不得共用同一個字（例：「清單」同時指 `allowed-tools` 的清單與模型的可用工具池，要各給一個詞）。縮寫與產品功能名比照：MCP 首次寫全稱，`managed settings`、Wayback 這類讀者可能不熟的名詞首次附一句說明（2026-10-27 實戰 bad case：定稿前掃出 7 處）
 
 ## 程式碼與排版
 
@@ -67,6 +68,7 @@ Guide、Apple Style Guide、Diátaxis Framework。每條規則行尾附原始出
 - 比較用表格：需要比較的資訊改用表格呈現（來源：使用者提供之寫作心法，經 spec §6 採納；三份 digest 無對應原始規則行，故不附 URL）
 - 資訊階層靠標題與留白：用標題分層、短段落製造留白，取代堆疊大段文字（https://learn.microsoft.com/en-us/style-guide/scannable-content/）
 - mermaid 圖自帶配色主題：區塊開頭用 `%%{init}%%` 指定明確的底色與文字色，不依賴渲染平台的預設主題（預設主題常見底色與文字對比不足）。時間軸／序數資料用單一色相由淺到深，深色底配白字、淺色底配深字；顏色階距要拉開到肉眼可辨；圖示語言說明以斜體圖說（*…*）緊跟圖後（2026-07-21 實戰 bad case）
+- 平台不渲染 mermaid 時，本機轉 PNG 的做法（先試過錯的做法會得到邊緣被截斷的圖，2026-10-27 實戰 bad case）：用已安裝的 Chrome headless 載入本機的 `mermaid.min.js`，不引 CDN（引用會產生本 skill 透明性聲明之外的網路存取）；圖放在 `<div class="mermaid">`，不放 `<pre>`（`<pre>` 的等寬字型讓量測字寬與實際繪出的字寬不一致，邊上標籤與節點文字會被截掉）；等 `document.fonts.ready` 後再呼叫 `mermaid.run()`；`flowchart.useMaxWidth` 設 `false` 取得明確的 svg 寬高，再用它設定 `--window-size`，並以 `--force-device-scale-factor=2` 截圖。每張出圖後要用眼睛看過：文字是否被截、換行是否把單字拆開（例：單獨掉一個「則」）、子圖標題只能單行（第二行會被節點蓋住）；單張寬度控制在約 1000 CSS px 內，貼進平台縮小後字級才讀得到；程式判斷渲染失敗時比對 `Syntax error in text`，不要比對 `error-icon`（樣式表本身就含這個字串）。文字仍被截尾（最後一字或半個字消失）時，原因是 mermaid 量測字寬用的是頂層 `fontFamily`／`fontSize`，只設在 `themeVariables` 不影響量測：init 裡要在頂層同時寫 `fontFamily`（與 themeVariables 相同）和 `fontSize`，並設 `flowchart.htmlLabels:false`、`flowchart.wrappingWidth` 放寬、`padding` 加大，需要斷行處自己寫 `<br/>`（自動換行會把單字或單個漢字擠成孤行）；用 JS 把原始碼塞進 `.mermaid` 容器時，mermaid 載入即自動跑過一次，要先 `removeAttribute('data-processed')` 才會重新渲染；回圈邊（例如「下一輪」連回起點）會超出 svg 量到的高度而被截圖裁掉，改用節點文字說明「重複」，並看過圖的四邊（2026-10-28 實戰 bad case：五張圖先後遇到字尾截斷、孤行單字、回圈邊被裁）
 - 程式碼與正文不需反覆對照：讀者複製貼上程式碼後會需要的說明，直接寫進程式碼註解，讓程式碼自身可讀，不必要求讀者回頭對照正文（https://developers.google.com/tech-writing/two/sample-code）
 
 ## Diátaxis 分類與圍欄

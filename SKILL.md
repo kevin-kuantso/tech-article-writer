@@ -1,6 +1,6 @@
 ---
 name: tech-article-writer
-version: 1.2.5
+version: 1.2.8
 description: |
   給一個技術題目與發布場景（internal 內部技術分享／blog 公開部落格／social 社群短文），先做多來源深度查證並經大綱確認，產出最新、可溯源、無 AI 味的技術分享文章。預設 zh-TW（技術名詞、程式碼、專有名詞保留英文），可指定英文。
   觸發時機：使用者說「幫我寫一篇關於 X 的技術分享」「寫篇文章介紹 X」「這個題目寫成部落格文／社群短文」，或給出題目並要求產出文章。
@@ -8,6 +8,9 @@ description: |
 user-invocable: true
 license: MIT
 changelog:
+  - "1.2.8 (2026-10-28): style-guide 的 mermaid 轉 PNG 做法補強——量測字寬用頂層 fontFamily／fontSize（只設 themeVariables 無效）、htmlLabels:false、手動 <br/> 避免孤行單字、JS 注入原始碼時清除 data-processed、回圈邊會被截圖裁掉；源自第三篇實戰（五張圖先後遇到字尾截斷、孤行單字、回圈邊被裁；1.2.6 的處方未能擋住截字）。"
+  - "1.2.7 (2026-10-27): style-guide 名詞紀律新增「意譯詞首次出現附英文原詞」——意譯成中文的官方術語首次寫「中文（英文原詞）」並全篇統一；同一概念不得中英混用、不同對象不得共用同一個字；縮寫與不熟悉的產品功能名首次附全稱或說明；源自第二篇實戰（定稿前掃出 7 處術語缺口，終審的「意譯處要標注」原本在 style-guide 沒有對應規則）。"
+  - "1.2.6 (2026-10-27): style-guide 新增「平台不渲染 mermaid 時本機轉 PNG 的做法」——本機 mermaid.min.js、用 div 不用 pre、等字型就緒再渲染、固定 2 倍輸出、出圖後目視檢查截斷與單字被拆行、子圖標題單行、單張寬度約 1000 CSS px；透明性聲明補列 figures/ 寫入；源自第二篇實戰（三張圖先後遇到文字截斷、錯誤偵測誤判、單圖過寬）。"
   - "1.2.5 (2026-07-21): 平台確認清單三件事→四件事，新增「標題長度上限：超限先砍 SEO 價值最低的詞組、其餘維持全拼一致」；源自 iT邦幫忙標題 100 字元限制。"
   - "1.2.4 (2026-07-21): 邊界修訂——平台不渲染 mermaid 時允許把自己的 mermaid 決定性轉為圖片檔（格式轉換非 AI 生圖）；源自首篇實戰 iT邦幫忙發布（mermaid 顯示為程式碼牆）。"
   - "1.2.3 (2026-07-21): 標題搜尋規則補充「同類名詞縮寫一致性：全拼或全縮，不混用」；源自首篇實戰標題定稿。"
@@ -34,7 +37,7 @@ changelog:
 本 skill 會做的網路存取與檔案寫入僅限以下項目，除此之外不做任何網路或檔案操作：
 
 - **網路存取**：階段 2 深度查證時的 WebSearch／WebFetch；交付前 link check 用的 `curl -sIL`（跟隨轉址後以最終 HTTP 狀態碼判定）
-- **檔案寫入**：skill 目錄下的 `config.json`；`output_dir` 下每個題目的文章資料夾（`research-digest.md`、`outline.md`、`article-<scene>.md`）
+- **檔案寫入**：skill 目錄下的 `config.json`；`output_dir` 下每個題目的文章資料夾（`research-digest.md`、`outline.md`、`article-<scene>.md`；發布平台不渲染 mermaid 時另有 `figures/` 放 mermaid 原始碼與渲染出的 PNG）
 
 ## 使用者設定（config.json）
 
@@ -101,7 +104,7 @@ curl -sIL -o /dev/null -w "%{http_code}" --max-time 15 "<url>"
 - 不做行銷文案、不寫官方文件／README
 - 不自動發布到任何平台（Confluence／Medium／社群貼文都是使用者的動作）
 - **不虛構作者經驗（鐵律）**：人味段落（踩坑經驗、立場轉折）需要親身素材時，在大綱關卡向使用者索取；使用者沒提供，就在對應位置輸出「（需作者補充：⋯）」佔位，絕不代編
-- 不生成圖片：需要架構圖／流程圖時用 mermaid 區塊，或標注「建議配圖」位置；發布平台不渲染 mermaid 時，可把自己寫的 mermaid 決定性轉出為圖片檔交付（本機瀏覽器渲染截圖，屬格式轉換，不是 AI 生圖）
+- 不生成圖片：需要架構圖／流程圖時用 mermaid 區塊，或標注「建議配圖」位置；發布平台不渲染 mermaid 時，可把自己寫的 mermaid 決定性轉出為圖片檔交付（本機瀏覽器渲染截圖，屬格式轉換，不是 AI 生圖；做法與陷阱見 style-guide「程式碼與排版」節）
 - v1 不含 evals／benchmark、不含 voice calibration
 
 ## 規則收割（交付後）
